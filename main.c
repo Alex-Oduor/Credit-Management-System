@@ -1,17 +1,26 @@
 
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 //Data organization
-struct main
-{
-    int customerID;
+struct Customer{
+    int customer_ID;
     char name[100];
-    float balance;
+    float credit_limit;
+    float current_balance;
 };
+//customers pointer
+struct Customer *customer = NULL;
+int customer_count = 0;
+//adding new customer
 
+void addcustomer(){
+    struct Customer new_customer;
 
-//function prototypes
-
-//void addcustomer();
+    new_customer .customer_ID = customer_count + 1;
+    printf("Enter customer.name")
+    getchar();
+}
 void showrecords(struct main customer[],int size){
     for(int i=0;i<size;i++){
     printf("CustomerID: %d\n",customer[i].customerID);
@@ -19,17 +28,6 @@ void showrecords(struct main customer[],int size){
     printf("Customer balance: %.2f\n----------------\n",customer[i].balance);
      }
 }
-//void recordpayment(struct main customer1){
-    
-//void increaselimit();
-
-int main(){
-    //
-    int option;
-    struct main customer[] = {
-        {100, "F. Scott Fitzgerald",10.99},
-        {1984, "George Orwell",  8.99},
-        {567 ,"Harper Lee",7.99}
     };
     int size= sizeof(customer)/sizeof(customer[0]);
 
