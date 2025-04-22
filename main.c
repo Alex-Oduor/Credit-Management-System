@@ -55,6 +55,46 @@ int addcustomer(){
 
 }
 
+//function to search record
+void search(){
+   int search_id;
+   int found=0;
+   struct Customer cust;
+   printf("Enter Customer ID to search:");
+   scanf("%d,&search_id");
+
+   FILE*file=fopen("customer_data.txt","r");
+   if(file==NULL){
+      printf("Error!Could not open file.\n");
+      return 0;
+   }
+   while(fread(&cust,sizeof(struct Customer),1, file) ==1){
+      if(cust.customer_ID == search_id){
+         printf("\nRecordFound:\n");
+         printf("Customer ID: %d\n", cust.customer_ID);
+         printf("Name:%s %s\n",cust.first_name, cust.second_name);
+         printf("credit Limit:%.2f\n",cust.credit_limit);
+         printf("Current Balance: %.2f\n",cust.current_balance);
+         found=1;
+         break;
+      }
+   }
+   if(!found){
+      printf("Customer with ID %d not found.\n",search_id);
+   }
+   fclose(file);
+
+   char back;
+   printf("\nReturn to main menu?[Y/N]");
+   scanf("%c",&back);
+   if(back=='N' ||back=='n'){
+      printf("Program exited.\n");
+      exit(0);
+   }
+   
+
+}
+
 // function to show all records
 int showrecords(){
   
