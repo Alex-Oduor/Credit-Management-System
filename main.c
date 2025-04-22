@@ -14,8 +14,8 @@ struct Customer{
 
 
 
-//adding new customer
-int addcustomer(){
+//function to add new customer
+void addcustomer(){
     char choice;
     struct Customer new_customer;
 
@@ -106,8 +106,8 @@ int showrecords(){
       return 0;
      }
  
-//move file pointer to the start of the file
-  rewind(file);
+
+  rewind(file);//move file pointer to the start of the file
 
   printf("----------All CUSTOMER RECORDS-------------\n\n");
   while (fread(&all_customers,sizeof(struct Customer),1,file)==1)
@@ -132,6 +132,61 @@ int showrecords(){
      }
 
 }
+
+//function to delete record
+int deleterecord(){
+   char choice;
+
+do{
+       int id;
+   
+       printf("Enter customer ID you want to remove:");
+        scanf("%d",&id);
+
+       struct Customer newcustomer;
+       int found=0;
+       FILE *file, *temp;
+   
+       file=fopen("customer_data.txt","rb");
+        temp=fopen("tempfile.txt", "wb");
+
+       if(file==NULL || temp==NULL){
+        printf("Error: %s",strerror(errno));
+        return 0;
+        }
+
+         while(fread(&newcustomer, sizeof(struct Customer),1,file))
+           {
+              if(newcustomer.customer_ID !=id){
+             fwrite(&newcustomer,sizeof(struct Customer),1,temp);
+               }
+             else{
+              found=1;
+             }
+            }
+
+       fclose(file);
+        fclose(temp);
+
+      if(found){
+      remove("customer_data.txt");
+      rename("tempfile.txt","customer_data.txt");
+       printf("Record deleted successfully\n\n");
+       }
+        else{
+        remove("tempfile.txt");
+        printf("Customer with %d not found\n\n",id);
+       }
+
+        printf("Would you like to remove another record?[Y/N]");
+        scanf(" %c", &choice);
+
+
+   }while (choice=='y' || choice=='Y');
+   
+   
+}
+
 int main(){
 
     //program initialization
@@ -151,7 +206,9 @@ int main(){
      printf("\n1.Add customer.\n");
      printf("2.Record payment\n");
      printf("3.View outstanding balance\n");
-     printf("4.EXIT\n\n");
+     printf("4.search record\n");
+     printf("5.Delete record\n");
+     printf("6.EXIT\n\n");
      printf("-----Choose one option.-----\n");
     
      
@@ -167,10 +224,20 @@ int main(){
         //recordpayment();
 
           }
-       else if(option==3){
-        showrecords();
-         }
-       else if(option==4){
+      else if(option==3){
+         showrecords();
+    
+            }
+      else if(option==4){
+               search();
+       
+             }
+      else if(option==5){
+            deleterecord();
+          
+            }
+       
+       else if(option==6){
         printf("\n\nThank you!.. program ended");
        }
 
@@ -178,7 +245,7 @@ int main(){
         printf("Invalid option!! Please try again.");
         }
  
-     }while(option!=4);
+     }while(option!=6);
 
 
 
