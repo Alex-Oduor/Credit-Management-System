@@ -57,11 +57,13 @@ void addcustomer(){
 
 //function to search record
 void search(){
+   char back;
+do{
    int search_id;
    int found=0;
    struct Customer cust;
    printf("Enter Customer ID to search:");
-   scanf("%d,&search_id");
+   scanf("%d",&search_id);
 
    FILE*file=fopen("customer_data.txt","r");
    if(file==NULL){
@@ -84,14 +86,11 @@ void search(){
    }
    fclose(file);
 
-   char back;
-   printf("\nReturn to main menu?[Y/N]");
-   scanf("%c",&back);
-   if(back=='N' ||back=='n'){
-      printf("Program exited.\n");
-      exit(0);
-   }
    
+   printf("\nWould you like to search another record?[Y/N]");
+   scanf(" %c",&back);
+
+}while(back== 'y'|| back=='Y') ;
 
 }
 
