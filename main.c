@@ -187,6 +187,9 @@ do{
    
 }
 
+
+//function to record payment
+
 int main(){
 
     //program initialization
@@ -205,7 +208,7 @@ int main(){
 
      printf("\n1.Add customer.\n");
      printf("2.Record payment\n");
-     printf("3.View outstanding balance\n");
+     printf("3.View all records\n");
      printf("4.search record\n");
      printf("5.Delete record\n");
      printf("6.EXIT\n\n");
