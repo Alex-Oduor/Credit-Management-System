@@ -95,7 +95,7 @@ do{
 }
 
 // function to show all records
-void showrecords(){
+int showrecords(){
   
   char main;
   struct Customer all_customers;
@@ -185,7 +185,7 @@ do{
    
    //function to record payments
 }
-void recordpayments(){
+void recordpayment(){
    int id, found = 0;
    float payment ;
    char again;
@@ -202,7 +202,7 @@ void recordpayments(){
          return ;
       }
       struct Customer cust;
-      while (fread(&cust, sizeof(struct customer),1,file) == 1){
+      while (fread(&cust, sizeof(struct Customer),1,file) == 1){
          if (cust . customer_ID == id){
             printf("Customer found :%s %s\n", cust.first_name,cust.second_name);
             printf("Current balance: %.2f\n",cust.current_balance);
@@ -219,7 +219,7 @@ void recordpayments(){
             }
             found = 1;
          }
-         fwrite(&cust, sizeof(struct customer),1,temp);
+         fwrite(&cust, sizeof(struct Customer),1,temp);
 
       }
       fclose(file);
@@ -230,10 +230,10 @@ void recordpayments(){
          rename("tempfile.txt","customer_data.txt");
       }else{
          remove("tempfile.txt");
-         rename("customer with ID %d not found.\n", id);
+         printf("customer with ID %d not found.\n", id);
       }
       printf("Record another payment ? [Y/N]: ");
-      scanf("%c", &again);
+      scanf(" %c", &again);
    }while(again == 'y' || again == 'Y');
 }
 
