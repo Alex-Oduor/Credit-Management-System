@@ -68,7 +68,7 @@ do{
    FILE*file=fopen("customer_data.txt","r");
    if(file==NULL){
       printf("Error!Could not open file.\n");
-      return 0;
+      return ;
    }
    while(fread(&cust,sizeof(struct Customer),1, file) ==1){
       if(cust.customer_ID == search_id){
@@ -95,7 +95,7 @@ do{
 }
 
 // function to show all records
-int showrecords(){
+void showrecords(){
   
   char main;
   struct Customer all_customers;
@@ -133,7 +133,7 @@ int showrecords(){
 }
 
 //function to delete record
-int deleterecord(){
+void deleterecord(){
    char choice;
 
 do{
@@ -151,7 +151,7 @@ do{
 
        if(file==NULL || temp==NULL){
         printf("Error: %s",strerror(errno));
-        return 0;
+        return ;
         }
 
          while(fread(&newcustomer, sizeof(struct Customer),1,file))
@@ -183,7 +183,58 @@ do{
 
    }while (choice=='y' || choice=='Y');
    
-   
+   //function to record payments
+}
+void recordpayments(){
+   int id, found = 0;
+   float payment ;
+   char again;
+
+   do{
+      printf("Enter customer ID to record payments:");
+      scanf("%d",&id);
+
+      FILE *file = fopen("customer_data.txt","rb");
+      FILE *temp = fopen("tempfile.txt","wb");
+
+      if (file ==NULL || temp == NULL){
+         printf("Error opening file .\n");
+         return ;
+      }
+      struct Customer cust;
+      while (fread(&cust, sizeof(struct customer),1,file) == 1){
+         if (cust . customer_ID == id){
+            printf("Customer found :%s %s\n", cust.first_name,cust.second_name);
+            printf("Current balance: %.2f\n",cust.current_balance);
+            printf("Enter payment amount :");
+            scanf("%f", &payment);
+
+            if (payment > cust.current_balance ){
+               printf("Payment exceeds current balance .Try again.\n");
+            }
+            else{
+               cust.current_balance  -=payment;
+               printf("Payment recorded. New balance:%.2f\n", cust.current_balance);
+
+            }
+            found = 1;
+         }
+         fwrite(&cust, sizeof(struct customer),1,temp);
+
+      }
+      fclose(file);
+      fclose(temp);
+
+      if (found){
+         remove("customer_data.txt");
+         rename("tempfile.txt","customer_data.txt");
+      }else{
+         remove("tempfile.txt");
+         rename("customer with ID %d not found.\n", id);
+      }
+      printf("Record another payment ? [Y/N]: ");
+      scanf("%c", &again);
+   }while(again == 'y' || again == 'Y');
 }
 
 
@@ -200,7 +251,7 @@ int main(){
      printf("\n\n======CREDIT MANAGEMENT SYSTEM======\n\n");
      printf("Press any key to continue.\n\n");
      while((getchar())!='\n');
-     getchar();
+
      printf("continuing the program......\n\n ");
  
      
@@ -223,7 +274,7 @@ int main(){
          }
 
        else if(option==2){
-        //recordpayment();
+         recordpayment();
 
           }
       else if(option==3){
